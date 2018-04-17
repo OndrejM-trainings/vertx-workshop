@@ -8,7 +8,7 @@ import io.vertx.servicediscovery.*;
 /**
  * a verticle generating "fake" quotes based on the configuration.
  */
-public class GeneratorConfigVerticle extends AbstractVerticle {
+public class DataProducerConfigVerticle extends AbstractVerticle {
 
   /**
    * The address on which the data are sent.

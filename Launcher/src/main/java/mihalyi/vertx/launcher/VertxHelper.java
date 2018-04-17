@@ -8,20 +8,31 @@ import java.util.logging.*;
 
 public final class VertxHelper {
 
+    private static final Logger LOGGER = Logger.getLogger(VertxHelper.class.getName());
+    
     // util class
     private VertxHelper() {
     }
     
-    public static void runVertxWithVerticle(Class<? extends AbstractVerticle> verticle) {
-        final VertxOptions options = VertxHelper.applyDefaultVertxOptions(new VertxOptions());
+    public static void runVertxWithVerticles(Class<? extends AbstractVerticle>... verticles) {
+        final VertxOptions options = applyDefaultVertxOptions(new VertxOptions());
         Vertx.clusteredVertx(options, ar -> {
             ar.map(vertx -> {
                 final DeploymentOptions deploymentOptions = readAndSetConfig(new DeploymentOptions());
-                vertx.deployVerticle(verticle.getName(), deploymentOptions);
+                for (Class<? extends AbstractVerticle> verticle : verticles ) {
+                    vertx.deployVerticle(verticle.getName(), deploymentOptions, deploymentResult -> {
+                        if (deploymentResult.failed()) {
+                            LOGGER.log(Level.SEVERE, "Failed to deploy verticle " + verticle.getName()
+                                            + " - " + deploymentResult.cause().getMessage(),
+                                            deploymentResult.cause());
+                        } else {
+                            LOGGER.log(Level.INFO, "Deployed verticle {0}", verticle.getSimpleName());
+                        }
+                    });
+                }
                 return null;
             }).otherwise(t -> {
-                Logger.getLogger(VertxHelper.class.getName())
-                        .log(Level.SEVERE, "Vert.x failed to start with verticle " + verticle.getName()
+                LOGGER.log(Level.SEVERE, "Vert.x failed to start"
                                 + " - " + t.getMessage(), t);
                 return null;
             });

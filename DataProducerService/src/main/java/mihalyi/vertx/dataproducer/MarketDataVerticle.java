@@ -67,7 +67,7 @@ public class MarketDataVerticle extends AbstractVerticle {
    * Sends the market data on the event bus.
    */
   private void send() {
-    vertx.eventBus().publish(GeneratorConfigVerticle.ADDRESS, toJson());
+    vertx.eventBus().publish(DataProducerConfigVerticle.ADDRESS, toJson());
   }
 
   /**
