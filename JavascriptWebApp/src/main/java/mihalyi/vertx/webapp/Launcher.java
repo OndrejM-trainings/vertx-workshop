@@ -1,10 +1,10 @@
-package mihalyi.vertx.dataconsumer;
+package mihalyi.vertx.webapp;
 
 import mihalyi.vertx.launcher.VertxHelper;
 
 public class Launcher {
 
     public static void main(String[] args) {
-        VertxHelper.runVertxWithVerticles(MarketDataLoggerVeticle.class.getName());
+        VertxHelper.runVertxWithVerticles("webappverticle.js");
     }
 }

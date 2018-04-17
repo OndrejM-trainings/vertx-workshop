@@ -226,5 +226,6 @@
         <module>Launcher</module>
         <module>DataProducerService</module>
         <module>DataConsumerService</module>
+        <module>JavascriptWebApp</module>
     </modules>
 </project>

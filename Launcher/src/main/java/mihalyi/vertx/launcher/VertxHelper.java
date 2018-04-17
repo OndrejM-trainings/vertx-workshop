@@ -14,19 +14,19 @@ public final class VertxHelper {
     private VertxHelper() {
     }
     
-    public static void runVertxWithVerticles(Class<? extends AbstractVerticle>... verticles) {
+    public static void runVertxWithVerticles(String... verticles) {
         final VertxOptions options = applyDefaultVertxOptions(new VertxOptions());
         Vertx.clusteredVertx(options, ar -> {
             ar.map(vertx -> {
                 final DeploymentOptions deploymentOptions = readAndSetConfig(new DeploymentOptions());
-                for (Class<? extends AbstractVerticle> verticle : verticles ) {
-                    vertx.deployVerticle(verticle.getName(), deploymentOptions, deploymentResult -> {
+                for (String verticle : verticles ) {
+                    vertx.deployVerticle(verticle, deploymentOptions, deploymentResult -> {
                         if (deploymentResult.failed()) {
-                            LOGGER.log(Level.SEVERE, "Failed to deploy verticle " + verticle.getName()
+                            LOGGER.log(Level.SEVERE, "Failed to deploy verticle " + verticle
                                             + " - " + deploymentResult.cause().getMessage(),
                                             deploymentResult.cause());
                         } else {
-                            LOGGER.log(Level.INFO, "Deployed verticle {0}", verticle.getSimpleName());
+                            LOGGER.log(Level.INFO, "Deployed verticle {0}", verticle);
                         }
                     });
                 }

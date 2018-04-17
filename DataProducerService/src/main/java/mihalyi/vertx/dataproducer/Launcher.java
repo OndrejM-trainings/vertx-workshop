@@ -5,7 +5,7 @@ import mihalyi.vertx.launcher.*;
 public class Launcher {
 
     public static void main(String[] args) {
-        VertxHelper.runVertxWithVerticles(DataProducerConfigVerticle.class);
+        VertxHelper.runVertxWithVerticles(DataProducerConfigVerticle.class.getName());
     }
 
 }
