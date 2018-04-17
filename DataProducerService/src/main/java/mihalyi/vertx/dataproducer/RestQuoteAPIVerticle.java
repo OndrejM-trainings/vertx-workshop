@@ -1,6 +1,6 @@
 package mihalyi.vertx.dataproducer;
 
-import io.vertx.core.AbstractVerticle;
+import io.vertx.core.*;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
@@ -31,6 +31,7 @@ public class RestQuoteAPIVerticle extends AbstractVerticle {
         });
 
 
+    Future f = Future.future();
     vertx.createHttpServer()
         .requestHandler(request -> {
           HttpServerResponse response = request.response()
@@ -60,12 +61,14 @@ public class RestQuoteAPIVerticle extends AbstractVerticle {
 
           // ----
         })
-        .listen(config().getInteger("http.port"), ar -> {
-          if (ar.succeeded()) {
+        .listen(config().getInteger("http.port"), f.completer());
+        f.map(result -> {
             System.out.println("Server started, listening on http://localhost:" + config().getInteger("http.port"));
-          } else {
-            System.out.println("Cannot start the server: " + ar.cause());
-          }
+            return null;
+        })
+        .otherwise(ex -> {
+            System.out.println("Cannot start the server: " + ex);
+            return null;
         });
   }
 }
