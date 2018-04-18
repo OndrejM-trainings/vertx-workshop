@@ -2,7 +2,7 @@
 
 Úlohou je doplniť a spustiť jednoduchú Vert.x aplikáciu DataProducerService.
 
-1. Skompilujte projekt pomocou `mvn install` ale vo vašom IDE. Kompilátor zahlási chyby.
+1. Skompilujte projekt pomocou `mvn install` alebo vo vašom IDE. Kompilátor zahlási chyby.
 
 2. Opravte chyby kompilátoru - súbory `Launcher.java` a `HellowWorldVerticle.java` podľa komentáru, ktorý začína slovom "Úloha"
 

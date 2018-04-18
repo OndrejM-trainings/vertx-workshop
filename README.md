@@ -7,3 +7,5 @@ Cvičenia na seba nadväzujú a je teda možné otvoriť projekt z prvého cvič
 Cvičenia:
 
 1. [Cvičenie 1 - prvý Vert.x projekt](01-exercise/README.md)
+2. [Cvičenie 2 - konfigurácia a event bus](02-exercise/README.md)
+3. [Cvičenie 3 - blocking tasks](02-exercise/README.md)
