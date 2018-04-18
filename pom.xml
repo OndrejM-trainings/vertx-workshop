@@ -8,7 +8,7 @@
     <name>Vertx Workshop Root</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <stack.version>3.4.1</stack.version>
+        <stack.version>3.5.1</stack.version>
 
         <!--overridden in each project packaged as a fat jar -->
         <main.launcher/>
@@ -66,6 +66,14 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-hazelcast</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-rx-java2</artifactId>
+            <version>${stack.version}</version>
+        </dependency>
+
+
 
         <!-- Microservice toolbox -->
         <dependency>

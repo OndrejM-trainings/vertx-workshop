@@ -9,40 +9,37 @@ import java.util.logging.*;
 public final class VertxHelper {
 
     private static final Logger LOGGER = Logger.getLogger(VertxHelper.class.getName());
-    
+
     // util class
     private VertxHelper() {
     }
-    
+
     public static void runVertxWithVerticles(String... verticles) {
         final VertxOptions options = applyDefaultVertxOptions(new VertxOptions());
-        Vertx.clusteredVertx(options, ar -> {
-            ar.map(vertx -> {
-                final DeploymentOptions deploymentOptions = readAndSetConfig(new DeploymentOptions());
-                for (String verticle : verticles ) {
-                    vertx.deployVerticle(verticle, deploymentOptions, deploymentResult -> {
-                        if (deploymentResult.failed()) {
-                            LOGGER.log(Level.SEVERE, "Failed to deploy verticle " + verticle
-                                            + " - " + deploymentResult.cause().getMessage(),
-                                            deploymentResult.cause());
-                        } else {
-                            LOGGER.log(Level.INFO, "Deployed verticle {0}", verticle);
-                        }
-                    });
-                }
-                return null;
-            }).otherwise(t -> {
-                LOGGER.log(Level.SEVERE, "Vert.x failed to start"
-                                + " - " + t.getMessage(), t);
-                return null;
-            });
-        });
-        
+        io.vertx.reactivex.core.Vertx.rxClusteredVertx(options).subscribe(
+                vertx -> {
+                    final DeploymentOptions deploymentOptions = readAndSetConfig(new DeploymentOptions());
+                    for (String verticle : verticles) {
+                        vertx.rxDeployVerticle(verticle, deploymentOptions)
+                                .subscribe(result -> {
+                                    LOGGER.log(Level.INFO, "Deployed verticle {0}", verticle);
+                                }, e -> {
+                                    LOGGER.log(Level.SEVERE, "Failed to deploy verticle " + verticle
+                                            + " - " + e.getMessage(), e);
+                                });
+                    }
+                },
+                 t
+                -> {
+            LOGGER.log(Level.SEVERE, "Vert.x failed to start"
+                    + " - " + t.getMessage(), t);
+        }
+        );
     }
-    
+
     public static VertxOptions applyDefaultVertxOptions(VertxOptions options) {
         options.setClustered(true)
-        .setClusterHost("127.0.0.1");
+                .setClusterHost("127.0.0.1");
         return options;
     }
 
