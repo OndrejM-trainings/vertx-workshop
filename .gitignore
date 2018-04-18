@@ -1,4 +1,4 @@
-/DataConsumerService/target/
-/DataConsumerWebApp/target/
-/JavascriptWebApp/target/
-/JavascriptWebApp/.vertx/
+target/
+target/
+target/
+.vertx/
